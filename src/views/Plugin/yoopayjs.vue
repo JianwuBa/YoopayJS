@@ -47,7 +47,7 @@
               <el-checkbox label="Credit Card Billing Address is Same as Shipping Address" name="adress"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <div v-show="cardInfo.sameAdress">
+          <div v-show="!cardInfo.sameAdress">
             <el-form-item prop="country">
               <p class="tit">Billing address</p>
               <el-form-item label="" prop="billingCountry" >
