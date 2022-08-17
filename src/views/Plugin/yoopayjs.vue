@@ -18,24 +18,24 @@
           <el-form-item label="" prop="cardName">
             <el-input v-model="cardInfo.cardName" placeholder="Name on card" class="cardInfo-input"></el-input>
           </el-form-item>
-          <el-form-item label="">
+          <el-form-item label="" style="margin-bottom: 0;">
             <el-row :gutter="10">
-              <el-col :span="8">
-                <el-form-item prop="cardExpdateMonth">
+              <el-col :lg="8" :sm="24">
+                <el-form-item prop="cardExpdateMonth" style="margin-bottom: 0;">
                   <el-select v-model="cardInfo.cardExpdateMonth"  placeholder="Expiration date  MM" style="width: 100%">
                     <el-option  v-for="item in cardInfo.monthList" :key="item" :label="item" :value="item"> </el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
-                <el-form-item prop="cardExpdateYear">
+              <el-col :lg="8" :sm="24">
+                <el-form-item prop="cardExpdateYear" style="margin-bottom: 0;">
                   <el-select v-model="cardInfo.cardExpdateYear"  placeholder="Expiration date  YYYY" style="width: 100%">
                     <el-option  v-for="item in cardInfo.yearList" :key="item" :label="item" :value="item"> </el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
-                <el-form-item prop="cardCvv2">
+              <el-col :lg="8" :sm="24">
+                <el-form-item prop="cardCvv2" style="margin-bottom: 0;">
                   <el-input v-model="cardInfo.cardCvv2" placeholder="Security code" class="cardInfo-input"></el-input>
                 </el-form-item>
               </el-col>
@@ -50,9 +50,9 @@
           <div v-show="!cardInfo.sameAdress">
             <el-form-item prop="country">
               <p class="tit">Billing address</p>
-              <el-form-item label="" prop="billingCountry" >
+              <el-form-item label="" prop="billingCountry" style="margin-bottom: 0;">
                 <el-select v-model="cardInfo.billingCountry" :popper-append-to-body="false" placeholder="Country" style="width: 100%">
-                  <el-option  v-for="item in cardInfo.countryList" :key="item.code" :label="item.countryEn" :value="item.code"> </el-option>
+                  <el-option  v-for="item in cardInfo.countryList" :key="item.code" :label="item.countryZh" :value="item.code"> </el-option>
                 </el-select>
               </el-form-item>
             </el-form-item>
@@ -85,7 +85,7 @@
 
         </el-form>
         <div style="text-align: center">
-          <el-button type="primary" class="pay" @click="submitForm('cardInfo')">立即创建</el-button>
+          <el-button type="primary" class="pay" id="pay" @click="submitForm('cardInfo')">pay</el-button>
         </div>
       </div>
 
@@ -130,7 +130,7 @@ export default {
         cardExpdateYear:'',
         adress:'',
         country:'',
-        sameAdress:false,
+        sameAdress:true,
         countryList:[
           {"countryZh":"ALBANIA","countryEn":"阿尔巴尼亚","code":"AL"},
           {"countryZh":"ALGERIA","countryEn":"阿尔及利亚","code":"DZ"},
@@ -408,9 +408,13 @@ export default {
     inintYoopayJS(obj){
       this.$nextTick(() => {
         let formDom = document.getElementsByClassName('plugin'),
-            {width,billingCountry,billingAddr,billingCity,billingState,billingZip,billingApartment,url} = obj
+            {width,paddingTop,paddingBottom,paddingRight,paddingLeft,billingCountry,billingAddr,billingCity,billingState,billingZip,billingApartment,url} = obj
         for (let i = 0; i < formDom.length; i++) {
-          formDom[i].style.width = `${width || 758}px`;
+          formDom[i].style.width = `${width || 100}%`;
+          formDom[i].style.paddingTop = `${paddingTop || 38}px`;
+          formDom[i].style.paddingBottom = `${paddingBottom || 64}px`;
+          formDom[i].style.paddingRight = `${paddingRight || 30}px`;
+          formDom[i].style.paddingLeft = `${paddingLeft || 30}px`;
           this.cardInfo.billingCountry = `${billingCountry}`
           this.cardInfo.billingAddr = `${billingAddr}`
           this.cardInfo.billingCity = `${billingCity}`
@@ -456,6 +460,7 @@ export default {
       }else{
         this.$refs[formName].validate((valid) => {
           if(valid){
+            this.$emit('validateSuccess')
             this.$http.post(this.url,this.infoForm()).then(res => {
               this.$emit('subCallback',res)
               console.log(res,'============')
@@ -473,13 +478,21 @@ export default {
 
 <style scoped lang="less">
 .plugin{
-  width:758px;
+  width:100%;
   background: #F9F9F9;
   margin: 0 auto;
-  padding: 38px 30px 64px;
   box-sizing: border-box;
+  padding-top: 38px;
+  padding-bottom: 64px;
+  padding-left: 30px;
+  padding-right: 30px;
   .middle{
-
+    /deep/ .el-col{
+      margin-bottom: 20px;
+    }
+    /deep/ .el-form-item{
+      margin-bottom: 20px;
+    }
     /deep/ .el-form-item__content{
       margin-left: 0;
       width: 100%;
@@ -505,7 +518,7 @@ export default {
       line-height: 38px;
       text-align: center;
       padding: 0;
-      margin-top: 50px;
+      margin-top: 0;
     }
   }
   .top{

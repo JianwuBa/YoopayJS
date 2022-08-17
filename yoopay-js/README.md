@@ -29,7 +29,11 @@ npm update yoopayjs
     methods:{
         initYoopayJS(){
             this.$refs.yoopayjs.inintYoopayJS({
-                width:600, // 组件整体宽度  选填
+                width:100, // 组件整体宽度百分比宽度  选填
+                paddingTop:20, // 组件内边距  选填
+                paddingBottom:20, // 组件内边距  选填
+                paddingRight:20, // 组件内边距  选填
+                paddingLeft:20, // 组件内边距  选填
                 url:'https://xxxxxx.xxx', //提交URL 必填
                 billingCountry:'US', // 国家或地区代码(C2代表中国 US代表美国) 必填
                 billingAddr:'xxx 街道', //街道 必填
